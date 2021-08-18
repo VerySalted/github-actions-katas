@@ -1,5 +1,8 @@
-name: Java CI
-on: [pull_request]
+name: Dev
+on:
+  push:
+    branches:
+      - "dev/**"
 env:
   docker_username: ${{ secrets.DOCKER_USERNAME }}
   docker_password: ${{ secrets.DOCKER_PASSWORD }}
@@ -10,7 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Upload repo
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@4:v2
         with:
           name: code
           path: .
@@ -64,23 +67,6 @@ jobs:
 
       - name: Build Docker
         run: chmod +x ci/build-docker.sh && export GIT_COMMIT="GA-$GITHUB_SHA" && ci/build-docker.sh
-
-      - name: Push Docker
-        run: chmod +x ci/push-docker.sh && export GIT_COMMIT="GA-$GITHUB_SHA" && ci/push-docker.sh
-
-  Component-test:
-    runs-on: self-hosted
-    needs: Docker-image
-
-    steps:
-      - name: Download code
-        uses: actions/download-artifact@v2
-        with:
-          name: code
-          path: .
-
-      - name: Exec component test
-        run: chmod +x ci/component-test.sh && export GIT_COMMIT="GA-$GITHUB_SHA" && ci/component-test.sh
 
       
 
