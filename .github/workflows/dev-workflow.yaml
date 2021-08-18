@@ -13,7 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Upload repo
-        uses: actions/upload-artifact@4:00v2
+        uses: actions/upload-artifact@4:v2
         with:
           name: code
           path: .
